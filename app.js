@@ -16,7 +16,7 @@ let breaksecond = 59;
 let longbreak = document.querySelector(".longbreak")
 let longbreaki = document.querySelector(".longbreaki")
 let longbreakminute = document.querySelector(".longbreakminute")
-let longbreakminutes = 15
+let longbreakminutes = 14
 let longbreaksemicolon = document.querySelector(".longbreaksemicolon")
 let longbreaksecond = document.querySelector(".longbreakseconds")
 let longbreakseconds = 59
@@ -33,7 +33,6 @@ function timer(){
 function breaktimer(){
 
      breakminutes = 4;
-
  breaksecond = 59;
 
     if(breakminutes <=9){
@@ -41,13 +40,12 @@ function breaktimer(){
         breakminute.innerHTML ="0"+ breakminutes
         breaksemicolon.innerHTML = ":"
         breakseconds.innerHTML = breaksecond
-    
     }
 }
 
 function longbreaktimer(){
     longbreakseconds = 59
-    longbreakminutes = 15
+    longbreakminutes = 14
     longbreakminute.innerHTML = longbreakminutes;
     longbreaksemicolon.innerHTML = ":"
     longbreaksecond.innerHTML = longbreakseconds;
@@ -67,11 +65,8 @@ if(breaksecond <=0){
 if(breaksecond <=9){
 
     breakminute.innerHTML = breakminutes
-
     breakseconds.innerHTML ="0"+ breaksecond;
-
     breaksemicolon.innerHTML = ":"
-
 }
 else{
 
@@ -118,24 +113,12 @@ else{
         longbreakminute.innerHTML ="0"+ longbreakminutes
     }
     else{
-
         longbreaksecond.innerHTML ="0"+ longbreakseconds;
     }
-
     longbreaksecond.innerHTML = longbreakseconds
-
     longbreaksemicolon.innerHTML = ":"
-
 }
 }
-
-
-
-
-
-
-
-
 function timerreduce(){
 
 second--
@@ -173,22 +156,14 @@ a.addEventListener("click",function(){
     breaki.style.display = "none";
 
     timer()
-
-  
-
 })
 shortbreak.addEventListener("click",function(){
 
     time.style.display = "none";
     longbreaki.style.display = "none"
     breaki.style.display = "block"
-
     breaktimer()
-
-  
     })
-
-
     longbreak.addEventListener("click",function(){
         time.style.display = "none";
         breaki.style.display = "none"
@@ -199,24 +174,94 @@ shortbreak.addEventListener("click",function(){
       
     })
 
+var isPaused = false;
+let isResumed = false;
+let pause = document.querySelector(".pause")
+let resume = document.querySelector(".resume")
 
-start.addEventListener("click",function(){
+function pauseTimer() {
 
-    clearInterval(timerInterval);
+    if (isPaused) {
+        // Resume the timer
+        isPaused = false;
+        if (time.style.display === "block") {
+            clearInterval(timerInterval);
+        } else if (breaki.style.display === "block") {
+            clearInterval(timerInterval);
+        } else if (longbreaki.style.display === "block") {
+            clearInterval(timerInterval);
+        }
+        console.log("if");
+    } 
 
-    if(time.style.display === "block"){
-        timerInterval = setInterval(timerreduce, 1000);
+
+    else {
+        // Pause the timer
+        isPaused = true;
+        clearInterval(timerInterval);
+        console.log("else");
     }
 
-     if(breaki.style.display === "block"){
-        timerInterval = setInterval(brektimereduce, 1000);
+}
+function ResumeTimer() {
+    isResumed =true;
+    if (isResumed) {
+        // Resume the timer
+        isResumed =false;
+        if (time.style.display === "block") {
+            timerInterval = setInterval(timerreduce, 1000);
+        } else if (breaki.style.display === "block") {
+            timerInterval = setInterval(brektimereduce, 1000);
+        } else if (longbreaki.style.display === "block") {
+            timerInterval = setInterval(longbrektimereduce, 1000);
+        }
+    } 
+}
 
-       
+start.addEventListener("click", function () {
+
+    if (isPaused){
+        pauseTimer();
+    } 
+
+    else {
+        clearInterval(timerInterval);
+
+        if (time.style.display === "block") {
+
+            timerInterval = setInterval(timerreduce, 1000);
+
+        } 
+
+        else if (breaki.style.display === "block") {
+
+            timerInterval = setInterval(brektimereduce, 1000);
+
+        } 
+
+        else if (longbreaki.style.display === "block") {
+
+            timerInterval = setInterval(longbrektimereduce, 1000);
+
+        }
+
     }
+});
 
-    if(longbreaki.style.display === "block"){
-        timerInterval = setInterval(longbrektimereduce, 1000);
+pause.addEventListener("click", function () {
+    pauseTimer();
+});
+resume.addEventListener("click", function () {
+    ResumeTimer();
+});
 
-        
-    }
-})
+
+
+// ===================summary===================
+
+// sab sai pehlai ui banai phir focus,shor break and longbreak k kisi bhi button par click kron tu innerhtml aajaye
+//phir start pause resume k button par click kroon tu functionality chal jaye
+// start k button par click karnai sai  time reduce hona start hojaye qk os mai mainai interval call kiya hoa hai sirf waahi call hoga jo block hoga sirf aik hi div block hoga
+// pause timer par bhi mainai same logic lagai hai jobhi block ho wo clearinterval hojayee
+//resume par bhi same logic lagai hai jo block ho waha setinterval hojaye
+
